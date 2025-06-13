@@ -1,6 +1,7 @@
 package com.invex.port.api.config;
 
 import com.invex.port.api.handler.EmployeeService;
+import com.invex.port.api.handler.LoginHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -9,6 +10,7 @@ import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -52,6 +54,18 @@ public class EmployeeRouter {
                                                              name = "error",
                                                              summary = "Error response",
                                                              value = "{\"error\":\"Internal Server Error\",\"message\":\"Unexpected error occurred\"}"
+                                                     )
+                                             )
+                                     ),
+                                     @ApiResponse(
+                                             responseCode = "401",
+                                             description = "Invalid credentials",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "error",
+                                                             summary = "Authentication failed",
+                                                             value = "{\"error\":\"Unauthorized\",\"message\":\"Invalid username or password\"}"
                                                      )
                                              )
                                      )
@@ -106,7 +120,19 @@ public class EmployeeRouter {
                                                      )
                                              )
                                      ),
-                                     @ApiResponse(responseCode = "404", description = "Employee not found")
+                                     @ApiResponse(responseCode = "404", description = "Employee not found"),
+                                     @ApiResponse(
+                                             responseCode = "401",
+                                             description = "Invalid credentials",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "error",
+                                                             summary = "Authentication failed",
+                                                             value = "{\"error\":\"Unauthorized\",\"message\":\"Invalid username or password\"}"
+                                                     )
+                                             )
+                                     )
                              }
                      )
              ),
@@ -140,6 +166,18 @@ public class EmployeeRouter {
                                                              name = "success",
                                                              summary = "Successful response",
                                                              value = "{\"id\":1,\"name\":\"Alice\",\"surname\":\"Smith\",\"lastName\":\"Johnson\",\"age\":30,\"gender\":\"FEMALE\",\"birthDate\":\"1994-01-15\",\"position\":\"Developer\"}"
+                                                     )
+                                             )
+                                     ),
+                                     @ApiResponse(
+                                             responseCode = "401",
+                                             description = "Invalid credentials",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "error",
+                                                             summary = "Authentication failed",
+                                                             value = "{\"error\":\"Unauthorized\",\"message\":\"Invalid username or password\"}"
                                                      )
                                              )
                                      )
@@ -178,18 +216,79 @@ public class EmployeeRouter {
                                                              value = "[{\"id\":1,\"name\":\"Alice\",\"surname\":\"Smith\",\"lastName\":\"Johnson\",\"age\":30,\"gender\":\"FEMALE\",\"birthDate\":\"1994-01-15\",\"position\":\"Developer\"}]"
                                                      )
                                              )
+                                     ),
+                                     @ApiResponse(
+                                             responseCode = "401",
+                                             description = "Invalid credentials",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "error",
+                                                             summary = "Authentication failed",
+                                                             value = "{\"error\":\"Unauthorized\",\"message\":\"Invalid username or password\"}"
+                                                     )
+                                             )
+                                     )
+                             }
+                     )
+             ),
+             @RouterOperation(
+                     path = "/login",
+                     produces = { "application/json" },
+                     method = RequestMethod.POST,
+                     beanClass = LoginHandler.class,
+                     beanMethod = "login",
+                     operation = @Operation(
+                             operationId = "login",
+                             summary = "Authenticate user and return JWT token",
+                             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                     required = true,
+                                     content = @Content(
+                                             mediaType = "application/json",
+                                             examples = @ExampleObject(
+                                                     name = "loginRequest",
+                                                     summary = "Sample login request",
+                                                     value = "{\"username\":\"user\",\"password\":\"pass\"}"
+                                             )
+                                     )
+                             ),
+                             responses = {
+                                     @ApiResponse(
+                                             responseCode = "200",
+                                             description = "JWT Token",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "success",
+                                                             summary = "Successful login",
+                                                             value = "{\"token\":\"<jwt_token>\"}"
+                                                     )
+                                             )
+                                     ),
+                                     @ApiResponse(
+                                             responseCode = "401",
+                                             description = "Invalid credentials",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "error",
+                                                             summary = "Authentication failed",
+                                                             value = "{\"error\":\"Unauthorized\",\"message\":\"Invalid username or password\"}"
+                                                     )
+                                             )
                                      )
                              }
                      )
              )
      })
-     public RouterFunction<ServerResponse> employeeRoutes(EmployeeService employeeService) {
+     public RouterFunction<ServerResponse> employeeRoutes(EmployeeService employeeService, LoginHandler loginHandler) {
          return RouterFunctions.route(
                  GET("/employees"), employeeService::getAllEmployees).andRoute(
                  DELETE("/employees/{id}"),    employeeService::deleteEmployee).andRoute(
-                 PUT("/employees/{id}"), employeeService::updateEmployee).andRoute(
-                 POST("/employees"), employeeService::createEmployee).andRoute(
-                 POST("/employees/batch"), employeeService::createEmployeeBatch
+                 PUT("/employees/{id}").and(accept(MediaType.APPLICATION_JSON)), employeeService::updateEmployee).andRoute(
+                 POST("/employees").and(accept(MediaType.APPLICATION_JSON)), employeeService::createEmployee).andRoute(
+                 POST("/employees/batch").and(accept(MediaType.APPLICATION_JSON)), employeeService::createEmployeeBatch).andRoute(
+                 POST("/login").and(accept(MediaType.APPLICATION_JSON)), loginHandler::login
          );
      }
 
