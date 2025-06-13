@@ -5,8 +5,9 @@ spring:
     shutdown: graceful
 ---
 spring:
-  profiles:
-    active: local
+  config:
+    activate:
+      on-profile: local
 
   r2dbc:
     url: r2dbc:h2:mem:///testdb
@@ -14,8 +15,9 @@ spring:
     password:
 ---
 spring:
-  profiles:
-    active: dev
+  config:
+    activate:
+      on-profile: dev
 
   r2dbc:
     url: r2dbc:postgresql://${database.host}:${database.port}/postgres
