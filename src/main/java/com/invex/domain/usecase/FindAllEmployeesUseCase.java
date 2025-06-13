@@ -1,7 +1,6 @@
 package com.invex.domain.usecase;
 
 import com.invex.domain.entity.Employee;
-import com.invex.domain.usecase.exception.EmployeeNotFoundException;
 import com.invex.domain.usecase.model.EmployeeModel;
 import com.invex.domain.usecase.request.Request;
 import com.invex.domain.usecase.response.FindAllEmployeesResponse;
