@@ -44,7 +44,7 @@ docker pull jonakmex9824/invex-api:0.0.2-RELEASE
 
 ```bash
 docker run \
-  -p 8082:8080 \
+  -p 8080:1000 \
   -e SPRING_PROFILES_ACTIVE=dev \
   -e DATABASE_HOST=<your-db-host> \
   -e DATABASE_PORT=<your-db-port> \
