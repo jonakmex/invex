@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDate;
 
@@ -28,4 +27,5 @@ public class CreateEmployeeRequest extends Request {
     @Past
     private LocalDate birthDate;
     private String position;
+    private boolean active;
 }

@@ -6,5 +6,7 @@ CREATE TABLE employee (
     age INT,
     gender VARCHAR(10),
     birth_date DATE,
-    position VARCHAR(100)
+    position VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    active BOOLEAN DEFAULT TRUE
 );

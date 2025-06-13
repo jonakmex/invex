@@ -30,4 +30,5 @@ public class UpdateEmployeeRequest extends Request {
     @Past
     private LocalDate birthDate;
     private String position;
+    private boolean active;
 }

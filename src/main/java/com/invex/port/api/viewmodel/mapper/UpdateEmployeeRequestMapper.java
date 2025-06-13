@@ -17,6 +17,7 @@ public class UpdateEmployeeRequestMapper implements ViewModelMapper <UpdateEmplo
                 .gender(updateEmployeeVMRequest.getGender())
                 .birthDate(updateEmployeeVMRequest.getBirthDate())
                 .position(updateEmployeeVMRequest.getPosition())
+                .active(updateEmployeeVMRequest.isActive())
                 .build();
     }
 }

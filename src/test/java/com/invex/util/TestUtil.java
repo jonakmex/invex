@@ -33,6 +33,23 @@ public class TestUtil {
         return employees;
     }
 
+    public static Employee buildRandomEmployee() {
+        Random random = new Random();
+        LocalDate start = LocalDate.now().minusYears(50);
+        long days = 50 * 365; // Approximate days in 50 years
+        long randomDay = new Random().nextLong(days + 1);
+        return Employee.builder()
+                .id((long) 1)
+                .name("Name" )
+                .surname("Surname")
+                .lastName("LastName" )
+                .age(20 + random.nextInt(30))
+                .gender(random.nextBoolean() ? Gender.MALE : Gender.FEMALE)
+                .birthDate(start.plusDays(randomDay))
+                .position("Position-" + UUID.randomUUID().toString().substring(0, 5))
+                .build();
+    }
+
     public static List<CreateEmployeeRequest> buildRandomEmployeesModel(int count) {
         List<CreateEmployeeRequest> employees = new ArrayList<>();
         Random random = new Random();

@@ -17,6 +17,7 @@ public class CreateEmployeeRequestMapper implements ViewModelMapper <CreateEmplo
                 .gender(createEmployeeVMRequest.getGender())
                 .birthDate(createEmployeeVMRequest.getBirthDate())
                 .position(createEmployeeVMRequest.getPosition())
+                .active(createEmployeeVMRequest.isActive())
                 .build();
     }
 }

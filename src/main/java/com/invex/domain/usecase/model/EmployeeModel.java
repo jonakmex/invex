@@ -16,4 +16,6 @@ public class EmployeeModel {
     private String gender;
     private LocalDate birthDate;
     private String position;
+    private LocalDate createdAt;
+    private boolean active;
 }

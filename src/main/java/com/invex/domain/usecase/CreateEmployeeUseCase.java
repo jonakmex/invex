@@ -29,6 +29,7 @@ public class CreateEmployeeUseCase extends UseCase {
                 .gender(Gender.valueOf(createEmployeeRequest.getGender()))
                 .birthDate(createEmployeeRequest.getBirthDate())
                 .position(createEmployeeRequest.getPosition())
+                .active(createEmployeeRequest.isActive())
                 .build();
         return employeeRepository.save(employee)
                 .flatMap(e -> Mono.just(CreateEmployeeResponse.builder()
@@ -41,6 +42,8 @@ public class CreateEmployeeUseCase extends UseCase {
                                 .gender(e.getGender().toString())
                                 .birthDate(e.getBirthDate())
                                 .position(e.getPosition())
+                                .active(e.isActive())
+                                .createdAt(e.getCreatedAt())
                                 .build()).build()));
 
     }

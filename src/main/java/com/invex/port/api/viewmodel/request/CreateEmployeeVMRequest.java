@@ -15,4 +15,5 @@ public class CreateEmployeeVMRequest {
     private String gender;
     private LocalDate birthDate;
     private String position;
+    private boolean active;
 }

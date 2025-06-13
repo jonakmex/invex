@@ -39,7 +39,9 @@ public class FindAllEmployeesUseCase extends UseCase {
             .gender(employee.getGender().toString())
             .birthDate(employee.getBirthDate())
             .position(employee.getPosition())
-                .build();
+            .createdAt(employee.getCreatedAt())
+            .active(employee.isActive())
+            .build();
     }
 
 }

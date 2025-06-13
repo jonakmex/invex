@@ -11,10 +11,7 @@ import com.invex.port.api.viewmodel.model.EmployeeViewModel;
 import com.invex.port.api.viewmodel.request.CreateEmployeeBatchVMRequest;
 import com.invex.port.api.viewmodel.request.CreateEmployeeVMRequest;
 import com.invex.port.api.viewmodel.request.UpdateEmployeeVMRequest;
-import com.invex.port.api.viewmodel.response.CreateEmployeeBatchVMResponse;
-import com.invex.port.api.viewmodel.response.CreateEmployeeVMResponse;
-import com.invex.port.api.viewmodel.response.FindAllEmployeesVMResponse;
-import com.invex.port.api.viewmodel.response.UpdateEmployeeVMResponse;
+import com.invex.port.api.viewmodel.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -28,6 +25,7 @@ import java.net.URI;
 public class EmployeeService {
 
     private final UseCase findAllEmployeesUseCase;
+    private final UseCase findEmployeeByIdUseCase;
     private final UseCase deleteEmployeeUseCase;
     private final UseCase updateEmployeeUseCase;
     private final UseCase createEmployeeUseCase;
@@ -41,11 +39,21 @@ public class EmployeeService {
     private final ViewModelMapper<CreateEmployeeResponse, CreateEmployeeVMResponse> createEmployeeResponseMapper;
     private final ViewModelMapper<CreateEmployeeBatchVMRequest, CreateEmployeeBatchRequest> createEmployeeBatchRequestMapper;
     private final ViewModelMapper<CreateEmployeeBatchResponse, CreateEmployeeBatchVMResponse> createEmployeeBatchResponseMapper;
+    private final ViewModelMapper<ServerRequest, FindEmployeeByIdRequest> findEmployeeByIdRequestMapper;
+    private final ViewModelMapper<Response, FindEmployeeByIdVMResponse> findEmployeeByIdResponseMapper;
 
     public Mono<ServerResponse> getAllEmployees(ServerRequest serverRequest) {
         return findAllEmployeesUseCase.execute(findAllEmployeesRequestMapper.map(serverRequest))
                 .flatMap(response -> Mono.just(findAllEmployeesResponseMapper.map(response)))
-                .flatMap(vm -> ServerResponse.ok().body(vm.getEmployees(), EmployeeViewModel.class));
+                .flatMap(vm -> ServerResponse.ok().body(vm.getEmployees(), EmployeeViewModel.class))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
+    public Mono<ServerResponse> findEmployeeById(ServerRequest serverRequest) {
+        return findEmployeeByIdUseCase.execute(findEmployeeByIdRequestMapper.map(serverRequest))
+                .flatMap(response -> Mono.just(findEmployeeByIdResponseMapper.map(response)))
+                .flatMap(vm -> ServerResponse.ok().body(Mono.just(vm.getEmployee()), EmployeeViewModel.class))
+                .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     public Mono<ServerResponse> deleteEmployee(ServerRequest serverRequest) {

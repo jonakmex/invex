@@ -30,6 +30,7 @@ public class CreateEmployeeBatchUseCase extends UseCase {
                                 .gender(Gender.valueOf(e.getGender()))
                                 .birthDate(e.getBirthDate())
                                 .position(e.getPosition())
+                                .active(e.isActive())
                                 .build()))
                         .flatMap(employeeRepository::save)
                         .flatMap(e -> Mono.just(e.getId())))

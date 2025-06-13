@@ -19,4 +19,6 @@ public class Employee {
     private Gender gender;
     private LocalDate birthDate;
     private String position;
+    private LocalDate createdAt;
+    private boolean active;
 }

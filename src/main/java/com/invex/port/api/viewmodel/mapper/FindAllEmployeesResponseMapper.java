@@ -23,6 +23,8 @@ public class FindAllEmployeesResponseMapper implements ViewModelMapper <Response
                         .gender(employeeModel.getGender())
                         .birthDate(employeeModel.getBirthDate())
                         .position(employeeModel.getPosition())
+                        .createdAt(employeeModel.getCreatedAt())
+                        .active(employeeModel.isActive())
                         .build()));
 
         return FindAllEmployeesVMResponse.builder()

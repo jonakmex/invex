@@ -284,6 +284,7 @@ public class EmployeeRouter {
      public RouterFunction<ServerResponse> employeeRoutes(EmployeeService employeeService, LoginHandler loginHandler) {
          return RouterFunctions.route(
                  GET("/employees"), employeeService::getAllEmployees).andRoute(
+                 GET("/employees/{id}").and(accept(MediaType.APPLICATION_JSON)), employeeService::findEmployeeById).andRoute(
                  DELETE("/employees/{id}"),    employeeService::deleteEmployee).andRoute(
                  PUT("/employees/{id}").and(accept(MediaType.APPLICATION_JSON)), employeeService::updateEmployee).andRoute(
                  POST("/employees").and(accept(MediaType.APPLICATION_JSON)), employeeService::createEmployee).andRoute(
