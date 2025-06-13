@@ -20,13 +20,13 @@ public class FindAllEmployeesUseCase extends UseCase {
 
     @Override
     public Mono<Response> doExecute(Request request) {
-        return employeeRepository
-                .findAll()
-                .flatMap(employee -> Mono.just(convertToModel(employee)))
-                .collectList()
-                .map(employeeModels -> FindAllEmployeesResponse.builder()
-                        .employees(employeeModels)
-                        .build());
+        return Mono.just(FindAllEmployeesResponse.builder()
+                .employees(employeeRepository
+                        .findAll()
+                        .flatMap(employee -> Mono.just(convertToModel(employee))))
+                .build());
+
+
     }
 
     private EmployeeModel convertToModel(Employee employee) {

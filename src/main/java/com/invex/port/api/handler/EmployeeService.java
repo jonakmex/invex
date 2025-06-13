@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -35,14 +36,14 @@ public class EmployeeService {
         var request = FindAllEmployeesRequest.builder().build();
         return findAllEmployeesUseCase.execute(request)
                 .flatMap(response -> Mono.just(mapToView(response)))
-                .flatMap(vm -> ServerResponse.ok().bodyValue(vm));
+                .flatMap(vm -> ServerResponse.ok().body(vm.getEmployees(), EmployeeViewModel.class));
     }
 
     public Mono<ServerResponse> deleteEmployee(ServerRequest serverRequest) {
         Long employeeId = Long.valueOf(serverRequest.pathVariable("id"));
         var request = DeleteEmployeeRequest.builder().employeeId(employeeId).build();
         return deleteEmployeeUseCase.execute(request)
-                .flatMap(response -> ServerResponse.noContent()
+                .then(ServerResponse.noContent()
                         .build());
     }
 
@@ -123,8 +124,8 @@ public class EmployeeService {
 
     private FindAllEmployeesVMResponse mapToView(Response useCaseResponse) {
         FindAllEmployeesResponse response = (FindAllEmployeesResponse) useCaseResponse;
-        List<EmployeeViewModel> employees = response.getEmployees().stream()
-                .map(employeeModel -> EmployeeViewModel.builder()
+        Flux<EmployeeViewModel> employees = response.getEmployees()
+                .flatMap(employeeModel -> Mono.just(EmployeeViewModel.builder()
                         .id(employeeModel.getId())
                         .name(employeeModel.getName())
                         .surname(employeeModel.getSurname())
@@ -133,9 +134,7 @@ public class EmployeeService {
                         .gender(employeeModel.getGender())
                         .birthDate(employeeModel.getBirthDate())
                         .position(employeeModel.getPosition())
-                        .build())
-
-                .toList();
+                        .build()));
 
         return FindAllEmployeesVMResponse.builder()
                 .employees(employees)

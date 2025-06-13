@@ -3,10 +3,9 @@ package com.invex.port.api.viewmodel.response;
 import com.invex.port.api.viewmodel.model.EmployeeViewModel;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 @Data
 @Builder
 public class FindAllEmployeesVMResponse {
-    public List<EmployeeViewModel> employees;
+    public Flux<EmployeeViewModel> employees;
 }

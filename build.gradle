@@ -33,6 +33,8 @@ dependencies {
 
 	runtimeOnly 'com.h2database:h2'
 	implementation('io.r2dbc:r2dbc-h2')
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.8'
 }
 
 tasks.named('test') {
