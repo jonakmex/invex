@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: invex
+  server:
+    shutdown: graceful
+---
+spring:
+  profiles:
+    active: local
+
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb
+    username: sa
+    password:
