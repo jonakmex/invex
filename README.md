@@ -106,7 +106,58 @@ This profile requires environment variables or Docker flags to set the database 
 
 ---
 
-## 📸 6. Screenshots
+## 🐳 6. Running with Docker Compose (MySQL)
+
+To run the API and MySQL together using Docker Compose, use the provided environment variables for MySQL initialization.
+
+### Example `docker-compose.yml`
+
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: invex
+      MYSQL_USER: invex
+      MYSQL_PASSWORD: invex123
+      MYSQL_ROOT_PASSWORD: qazwsx12
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  invex-api:
+    image: jonakmex9824/invex-api:0.0.1-RELEASE
+    ports:
+      - "8081:1000"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_NAME: invex
+      DATABASE_USERNAME: invex
+      DATABASE_PASSWORD: invex123
+    depends_on:
+      mysql:
+        condition: service_healthy
+```
+
+### How to Run
+
+```bash
+docker-compose up
+```
+
+- The API will be available at [http://localhost:8081](http://localhost:8081).
+- MySQL will be initialized with the specified credentials.
+- The API will wait for MySQL to be healthy before starting.
+
+> ℹ️ Make sure Docker is installed and running on your system.
+
+## 📸 7. Screenshots
 
 ### Swagger UI
 
@@ -117,7 +168,7 @@ This profile requires environment variables or Docker flags to set the database 
 ![H2 Console](docs/images/h2-console.png)
 ---
 
-## 📸 7. Postman Collection
+## 📸 8. Postman Collection
 [Download Postman Collection](docs/images/REST_Employee.postman_collection.json)
 ## 💬 Questions or Issues?
 
