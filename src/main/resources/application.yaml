@@ -18,7 +18,10 @@ spring:
     active: dev
 
   r2dbc:
-    url: r2dbc:postgresql://${database.host}:${database.port}/${database.name}
+    url: r2dbc:postgresql://${database.host}:${database.port}/postgres
     username: ${database.username}
     password: ${database.password}
     pool.enabled: true
+
+server:
+  port: ${PORT:1000}
