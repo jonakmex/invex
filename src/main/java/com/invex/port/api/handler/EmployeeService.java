@@ -26,6 +26,7 @@ public class EmployeeService {
 
     private final UseCase findAllEmployeesUseCase;
     private final UseCase findEmployeeByIdUseCase;
+    private final UseCase findEmployeeByNameUseCase;
     private final UseCase deleteEmployeeUseCase;
     private final UseCase updateEmployeeUseCase;
     private final UseCase createEmployeeUseCase;
@@ -41,6 +42,8 @@ public class EmployeeService {
     private final ViewModelMapper<CreateEmployeeBatchResponse, CreateEmployeeBatchVMResponse> createEmployeeBatchResponseMapper;
     private final ViewModelMapper<ServerRequest, FindEmployeeByIdRequest> findEmployeeByIdRequestMapper;
     private final ViewModelMapper<Response, FindEmployeeByIdVMResponse> findEmployeeByIdResponseMapper;
+    private final ViewModelMapper<ServerRequest, FindEmployeeByNameRequest> findEmployeeByNameRequestMapper;
+    private final ViewModelMapper<Response, FindEmployeeByNameVMResponse> findEmployeeByNameResponseMapper;
 
     public Mono<ServerResponse> getAllEmployees(ServerRequest serverRequest) {
         return findAllEmployeesUseCase.execute(findAllEmployeesRequestMapper.map(serverRequest))
@@ -53,6 +56,13 @@ public class EmployeeService {
         return findEmployeeByIdUseCase.execute(findEmployeeByIdRequestMapper.map(serverRequest))
                 .flatMap(response -> Mono.just(findEmployeeByIdResponseMapper.map(response)))
                 .flatMap(vm -> ServerResponse.ok().body(Mono.just(vm.getEmployee()), EmployeeViewModel.class))
+                .switchIfEmpty(ServerResponse.notFound().build());
+    }
+
+    public Mono<ServerResponse> findEmployeeByName(ServerRequest serverRequest) {
+        return findEmployeeByNameUseCase.execute(findEmployeeByNameRequestMapper.map(serverRequest))
+                .flatMap(response -> Mono.just(findEmployeeByNameResponseMapper.map(response)))
+                .flatMap(vm -> ServerResponse.ok().body(vm.getEmployees(), EmployeeViewModel.class))
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 

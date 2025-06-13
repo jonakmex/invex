@@ -37,7 +37,7 @@ docker build --platform=linux/amd64 -t jonakmex9824/invex-api:0.0.2-RELEASE .
 ### 📥 (Alternatively) Pull the Prebuilt Image
 
 ```bash
-docker pull jonakmex9824/invex-api:0.0.2-RELEASE
+docker pull jonakmex9824/invex-api:0.0.1-RELEASE
 ```
 
 ### ▶️ Run the Image
@@ -51,7 +51,7 @@ docker run \
   -e DATABASE_NAME=<your-db-name> \
   -e DATABASE_USERNAME=<your-db-username> \
   -e DATABASE_PASSWORD=<your-db-password> \
-  jonakmex9824/invex-api:0.0.2-RELEASE
+  jonakmex9824/invex-api:0.0.1-RELEASE
 ```
 
 Replace placeholders with your actual PostgreSQL configuration.
