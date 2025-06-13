@@ -1,6 +1,7 @@
 package com.invex.domain.usecase;
 
 import com.invex.domain.entity.Gender;
+import com.invex.domain.usecase.exception.EmployeeNotFoundException;
 import com.invex.domain.usecase.model.EmployeeModel;
 import com.invex.domain.usecase.request.Request;
 import com.invex.domain.usecase.request.UpdateEmployeeRequest;
@@ -22,6 +23,7 @@ public class UpdateEmployeeUseCase extends UseCase {
         UpdateEmployeeRequest updateRequest = (UpdateEmployeeRequest) request;
 
         return employeeRepository.findById(updateRequest.getId())
+                .switchIfEmpty(Mono.error(new EmployeeNotFoundException(updateRequest.getId())))
                 .flatMap(e -> {
                     e.setName(updateRequest.getName());
                     e.setSurname(updateRequest.getSurname());

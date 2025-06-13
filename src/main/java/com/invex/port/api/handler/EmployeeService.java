@@ -46,7 +46,7 @@ public class EmployeeService {
                         .build());
     }
 
-    public Mono<ServerResponse> updateEployee(ServerRequest serverRequest) {
+    public Mono<ServerResponse> updateEmployee(ServerRequest serverRequest) {
         Long employeeId = Long.valueOf(serverRequest.pathVariable("id"));
         return serverRequest.bodyToMono(UpdateEmployeeVMRequest.class)
                 .flatMap(updateRequest ->

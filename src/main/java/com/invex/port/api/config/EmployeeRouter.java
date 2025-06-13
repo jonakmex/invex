@@ -17,7 +17,7 @@ public class EmployeeRouter {
          return RouterFunctions.route(
                  GET("/employees"), employeeService::getAllEmployees).andRoute(
                  DELETE("/employees/{id}"),    employeeService::deleteEmployee).andRoute(
-                 PUT("/employees/{id}"), employeeService::updateEployee).andRoute(
+                 PUT("/employees/{id}"), employeeService::updateEmployee).andRoute(
                  POST("/employees"), employeeService::createEmployee
          );
      }
