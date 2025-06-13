@@ -34,7 +34,7 @@ public class FindAllEmployeesUseCaseTest {
                 .expectSubscription()
                 .expectNextMatches(response -> {
                     FindAllEmployeesResponse res = (FindAllEmployeesResponse) response;
-                    return res.getEmployees().size() == 10;
+                    return res.getEmployees().collectList().block().size() == 10;
                 })
                 .verifyComplete();
     }

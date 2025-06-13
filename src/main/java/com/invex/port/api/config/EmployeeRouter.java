@@ -145,6 +145,42 @@ public class EmployeeRouter {
                                      )
                              }
                      )
+             ),
+             @RouterOperation(
+                     path = "/employees/batch",
+                     produces = { "application/json" },
+                     method = RequestMethod.POST,
+                     beanClass = EmployeeService.class,
+                     beanMethod = "createEmployeeBatch",
+                     operation = @Operation(
+                             operationId = "createEmployeeBatch",
+                             summary = "Create a new employees",
+                             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                                     required = true,
+                                     content = @Content(
+                                             mediaType = "application/json",
+                                             examples = @ExampleObject(
+                                                     name = "employeeRequest",
+                                                     summary = "Sample employee creation request",
+                                                     value = "[{\"name\":\"Alice\",\"surname\":\"Smith\",\"lastName\":\"Johnson\",\"age\":30,\"gender\":\"FEMALE\",\"birthDate\":\"1994-01-15\",\"position\":\"Developer\"}]"
+                                             )
+                                     )
+                             ),
+                             responses = {
+                                     @ApiResponse(
+                                             responseCode = "201",
+                                             description = "Employee Created",
+                                             content = @Content(
+                                                     mediaType = "application/json",
+                                                     examples = @ExampleObject(
+                                                             name = "success",
+                                                             summary = "Successful response",
+                                                             value = "[{\"id\":1,\"name\":\"Alice\",\"surname\":\"Smith\",\"lastName\":\"Johnson\",\"age\":30,\"gender\":\"FEMALE\",\"birthDate\":\"1994-01-15\",\"position\":\"Developer\"}]"
+                                                     )
+                                             )
+                                     )
+                             }
+                     )
              )
      })
      public RouterFunction<ServerResponse> employeeRoutes(EmployeeService employeeService) {
@@ -152,7 +188,8 @@ public class EmployeeRouter {
                  GET("/employees"), employeeService::getAllEmployees).andRoute(
                  DELETE("/employees/{id}"),    employeeService::deleteEmployee).andRoute(
                  PUT("/employees/{id}"), employeeService::updateEmployee).andRoute(
-                 POST("/employees"), employeeService::createEmployee
+                 POST("/employees"), employeeService::createEmployee).andRoute(
+                 POST("/employees/batch"), employeeService::createEmployeeBatch
          );
      }
 
