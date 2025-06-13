@@ -25,15 +25,26 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzQ5ODQwOTE2LCJleHAiOjE3NDk4NDQ1MTZ9.4Gguo8cGY8hJ3KxWts-fXUs_YJGf-NrT1-9-rvkai1o",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{host}}/employees",
+					"raw": "{{host}}/employees/1",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"employees"
+						"employees",
+						"1"
 					]
 				},
 				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -58,11 +69,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzQ5ODQwOTE2LCJleHAiOjE3NDk4NDQ1MTZ9.4Gguo8cGY8hJ3KxWts-fXUs_YJGf-NrT1-9-rvkai1o",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Javier\",\n  \"surname\": \"Espinoza\",\n  \"lastName\": \"Rodriguez\",\n  \"age\": 35,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Manager\"\n}",
+					"raw": "{\n  \"name\": \"Javier\",\n  \"surname\": \"Espinoza\",\n  \"lastName\": \"Rodriguez\",\n  \"age\": 35,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Manager\",\n  \"active\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -88,7 +109,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\"\n}",
+							"raw": "{\n  \"name\": \"\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\",\n  \"active\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -134,7 +155,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n  {\n    \"name\": \"Alice\",\n    \"surname\": \"Johnson\",\n    \"lastName\": \"Miller\",\n    \"age\": 28,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1996-02-10\",\n    \"position\": \"QA Engineer\"\n  },\n  {\n    \"name\": \"\",\n    \"surname\": \"Lee\",\n    \"lastName\": \"Anderson\",\n    \"age\": 35,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1989-08-22\",\n    \"position\": \"Project Manager\"\n  },\n  {\n    \"name\": \"Clara\",\n    \"surname\": \"Martinez\",\n    \"lastName\": \"Garcia\",\n    \"age\": 26,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1998-11-03\",\n    \"position\": \"UI Designer\"\n  },\n  {\n    \"name\": \"David\",\n    \"surname\": \"Kim\",\n    \"lastName\": \"Park\",\n    \"age\": 40,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1984-03-19\",\n    \"position\": \"DevOps Engineer\"\n  },\n  {\n    \"name\": \"Emma\",\n    \"surname\": \"Brown\",\n    \"lastName\": \"Wilson\",\n    \"age\": 32,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1992-07-27\",\n    \"position\": \"Backend Developer\"\n  }\n]",
+					"raw": "[\n  {\n    \"name\": \"Alice\",\n    \"surname\": \"Johnson\",\n    \"lastName\": \"Miller\",\n    \"age\": 28,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1996-02-10\",\n    \"position\": \"QA Engineer\",\n    \"active\" : true\n  },\n  {\n    \"name\": \"\",\n    \"surname\": \"Lee\",\n    \"lastName\": \"Anderson\",\n    \"age\": 35,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1989-08-22\",\n    \"position\": \"Project Manager\",\n    \"active\" : true\n  },\n  {\n    \"name\": \"Clara\",\n    \"surname\": \"Martinez\",\n    \"lastName\": \"Garcia\",\n    \"age\": 26,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1998-11-03\",\n    \"position\": \"UI Designer\",\n    \"active\" : true\n  },\n  {\n    \"name\": \"David\",\n    \"surname\": \"Kim\",\n    \"lastName\": \"Park\",\n    \"age\": 40,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1984-03-19\",\n    \"position\": \"DevOps Engineer\",\n    \"active\" : true\n  },\n  {\n    \"name\": \"Emma\",\n    \"surname\": \"Brown\",\n    \"lastName\": \"Wilson\",\n    \"age\": 32,\n    \"gender\": \"FEMALE\",\n    \"birthDate\": \"1992-07-27\",\n    \"position\": \"Backend Developer\",\n    \"active\" : true\n  }\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -161,7 +182,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\"\n}",
+							"raw": "{\n    \"name\": \"\",\n    \"surname\": \"Doe\",\n    \"lastName\": \"Smith\",\n    \"age\": 31,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1993-05-15\",\n    \"position\": \"Developer\",\n    \"active\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +228,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"John\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\"\n}",
+					"raw": "{\n    \"name\": \"John\",\n    \"surname\": \"Doe\",\n    \"lastName\": \"Smith\",\n    \"age\": 31,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1993-05-15\",\n    \"position\": \"Developer\",\n    \"active\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -234,7 +255,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\"\n}",
+							"raw": "{\n    \"name\": \"\",\n    \"surname\": \"Doe\",\n    \"lastName\": \"Smith\",\n    \"age\": 31,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1993-05-15\",\n    \"position\": \"Developer\",\n    \"active\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -264,7 +285,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"John\",\n  \"surname\": \"Doe\",\n  \"lastName\": \"Smith\",\n  \"age\": 31,\n  \"gender\": \"MALE\",\n  \"birthDate\": \"1993-05-15\",\n  \"position\": \"Developer\"\n}",
+							"raw": "{\n    \"name\": \"John\",\n    \"surname\": \"Doe\",\n    \"lastName\": \"Smith\",\n    \"age\": 31,\n    \"gender\": \"MALE\",\n    \"birthDate\": \"1993-05-15\",\n    \"position\": \"Developer\",\n    \"active\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,6 +366,34 @@
 					"path": [
 						"actuator",
 						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"user\",\n  \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
 					]
 				}
 			},
