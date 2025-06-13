@@ -118,8 +118,7 @@ This profile requires environment variables or Docker flags to set the database 
 ---
 
 ## 📸 7. Postman Collection
-[Postman Collection](docs/REST_Employee.postman_collection.json)
-
+[Download Postman Collection](https://github.com/jonakmex/invex/raw/main/docs/REST_Employee.postman_collection.json)
 ## 💬 Questions or Issues?
 
 Please open an [issue](https://github.com/jonakmex/invex/issues) or contact the maintainer.
