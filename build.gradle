@@ -25,6 +25,9 @@ dependencies {
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 	implementation 'org.glassfish:jakarta.el:4.0.2'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
