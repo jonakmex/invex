@@ -2,10 +2,8 @@ package com.invex.port.api.viewmodel.mapper;
 
 import com.invex.domain.usecase.model.EmployeeModel;
 import com.invex.domain.usecase.response.CreateEmployeeResponse;
-import com.invex.domain.usecase.response.UpdateEmployeeResponse;
 import com.invex.port.api.viewmodel.model.EmployeeViewModel;
 import com.invex.port.api.viewmodel.response.CreateEmployeeVMResponse;
-import com.invex.port.api.viewmodel.response.UpdateEmployeeVMResponse;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,7 +1,6 @@
 package com.invex.domain.usecase;
 
 import com.invex.domain.usecase.request.FindAllEmployeesRequest;
-import com.invex.domain.usecase.request.Request;
 import com.invex.domain.usecase.response.FindAllEmployeesResponse;
 import com.invex.port.repository.EmployeeRepository;
 import com.invex.util.TestUtil;

@@ -1,11 +1,8 @@
 package com.invex.domain.usecase;
 
 import com.invex.domain.entity.Employee;
-import com.invex.domain.entity.Gender;
 import com.invex.domain.usecase.request.CreateEmployeeBatchRequest;
-import com.invex.domain.usecase.request.CreateEmployeeRequest;
 import com.invex.domain.usecase.response.CreateEmployeeBatchResponse;
-import com.invex.domain.usecase.response.CreateEmployeeResponse;
 import com.invex.port.repository.EmployeeRepository;
 import com.invex.util.TestUtil;
 import org.junit.jupiter.api.Test;
@@ -17,7 +14,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.LocalDate;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -2,17 +2,13 @@ package com.invex.domain.usecase;
 
 import com.invex.domain.entity.Employee;
 import com.invex.domain.entity.Gender;
-import com.invex.domain.usecase.model.EmployeeModel;
 import com.invex.domain.usecase.request.CreateEmployeeBatchRequest;
-import com.invex.domain.usecase.request.CreateEmployeeRequest;
 import com.invex.domain.usecase.request.Request;
 import com.invex.domain.usecase.response.CreateEmployeeBatchResponse;
-import com.invex.domain.usecase.response.CreateEmployeeResponse;
 import com.invex.domain.usecase.response.Response;
 import com.invex.port.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
