@@ -7,6 +7,7 @@ import com.invex.domain.usecase.response.CreateEmployeeResponse;
 import com.invex.domain.usecase.response.FindAllEmployeesResponse;
 import com.invex.domain.usecase.response.Response;
 import com.invex.domain.usecase.response.UpdateEmployeeResponse;
+import com.invex.port.api.viewmodel.mapper.ViewModelMapper;
 import com.invex.port.api.viewmodel.model.EmployeeViewModel;
 import com.invex.port.api.viewmodel.request.CreateEmployeeVMRequest;
 import com.invex.port.api.viewmodel.request.UpdateEmployeeVMRequest;
@@ -32,10 +33,16 @@ public class EmployeeService {
     private final UseCase updateEmployeeUseCase;
     private final UseCase createEmployeeUseCase;
 
+    private final ViewModelMapper<ServerRequest,FindAllEmployeesRequest> findAllEmployeesRequestMapper;
+    private final ViewModelMapper<Response, FindAllEmployeesVMResponse> findAllEmployeesResponseMapper;
+    private final ViewModelMapper<UpdateEmployeeVMRequest, UpdateEmployeeRequest> updateEmployeeRequestMapper;
+    private final ViewModelMapper<UpdateEmployeeResponse, UpdateEmployeeVMResponse> updateEmployeeResponseMapper;
+    private final ViewModelMapper<CreateEmployeeVMRequest, CreateEmployeeRequest> createEmployeeRequestMapper;
+    private final ViewModelMapper<CreateEmployeeResponse, CreateEmployeeVMResponse> createEmployeeResponseMapper;
+
     public Mono<ServerResponse> getAllEmployees(ServerRequest serverRequest) {
-        var request = FindAllEmployeesRequest.builder().build();
-        return findAllEmployeesUseCase.execute(request)
-                .flatMap(response -> Mono.just(mapToView(response)))
+        return findAllEmployeesUseCase.execute(findAllEmployeesRequestMapper.map(serverRequest))
+                .flatMap(response -> Mono.just(findAllEmployeesResponseMapper.map(response)))
                 .flatMap(vm -> ServerResponse.ok().body(vm.getEmployees(), EmployeeViewModel.class));
     }
 
@@ -50,35 +57,16 @@ public class EmployeeService {
     public Mono<ServerResponse> updateEmployee(ServerRequest serverRequest) {
         Long employeeId = Long.valueOf(serverRequest.pathVariable("id"));
         return serverRequest.bodyToMono(UpdateEmployeeVMRequest.class)
-                .flatMap(updateRequest ->
-                        Mono.just(UpdateEmployeeRequest.builder()
-                                .id(employeeId)
-                                .name(updateRequest.getName())
-                                .surname(updateRequest.getSurname())
-                                .lastName(updateRequest.getLastName())
-                                .age(updateRequest.getAge())
-                                .gender(updateRequest.getGender())
-                                .birthDate(updateRequest.getBirthDate())
-                                .position(updateRequest.getPosition())
-                                .build())
+                .flatMap(updateRequest -> {
+                            UpdateEmployeeRequest updateEmployeeRequest = updateEmployeeRequestMapper.map(updateRequest);
+                            updateEmployeeRequest.setId(employeeId);
+                            return Mono.just(updateEmployeeRequest);
+                        }
                 )
                 .flatMap(updateEmployeeUseCase::execute)
                 .flatMap(response -> {
                     UpdateEmployeeResponse updateResponse = (UpdateEmployeeResponse) response;
-                    EmployeeModel employeeModel = updateResponse.getEmployeeModel();
-                    UpdateEmployeeVMResponse vmResponse = UpdateEmployeeVMResponse.builder()
-                            .employee(EmployeeViewModel.builder()
-                                    .id(employeeModel.getId())
-                                    .name(employeeModel.getName())
-                                    .surname(employeeModel.getSurname())
-                                    .lastName(employeeModel.getLastName())
-                                    .age(employeeModel.getAge())
-                                    .gender(employeeModel.getGender())
-                                    .birthDate(employeeModel.getBirthDate())
-                                    .position(employeeModel.getPosition())
-                                    .build())
-                            .build();
-                    return Mono.just(vmResponse);
+                    return Mono.just(updateEmployeeResponseMapper.map(updateResponse));
                 })
                 .flatMap(updateEmployeeVMResponse -> ServerResponse.ok().bodyValue(updateEmployeeVMResponse));
 
@@ -87,58 +75,17 @@ public class EmployeeService {
     public Mono<ServerResponse> createEmployee(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(CreateEmployeeVMRequest.class)
                 .flatMap(createRequest ->
-                        Mono.just(CreateEmployeeRequest.builder()
-                                .name(createRequest.getName())
-                                .surname(createRequest.getSurname())
-                                .lastName(createRequest.getLastName())
-                                .age(createRequest.getAge())
-                                .gender(createRequest.getGender())
-                                .birthDate(createRequest.getBirthDate())
-                                .position(createRequest.getPosition())
-                                .build())
+                        Mono.just(createEmployeeRequestMapper.map(createRequest))
                 )
                 .flatMap(createEmployeeUseCase::execute)
                 .flatMap(response -> {
                     CreateEmployeeResponse createResponse = (CreateEmployeeResponse) response;
-                    EmployeeModel employeeModel = createResponse.getEmployeeModel();
-                    CreateEmployeeVMResponse vmResponse = CreateEmployeeVMResponse.builder()
-                            .employee(EmployeeViewModel.builder()
-                                    .id(employeeModel.getId())
-                                    .name(employeeModel.getName())
-                                    .surname(employeeModel.getSurname())
-                                    .lastName(employeeModel.getLastName())
-                                    .age(employeeModel.getAge())
-                                    .gender(employeeModel.getGender())
-                                    .birthDate(employeeModel.getBirthDate())
-                                    .position(employeeModel.getPosition())
-                                    .build())
-                            .build();
-                    return Mono.just(vmResponse);
+                    return Mono.just(createEmployeeResponseMapper.map(createResponse));
                 })
                 .flatMap(createEmployeeVMResponse -> {
                     URI location = URI.create("/employees/" + createEmployeeVMResponse.getEmployee().getId());
                     return ServerResponse.created(location).bodyValue(createEmployeeVMResponse);
                 });
-
     }
 
-    private FindAllEmployeesVMResponse mapToView(Response useCaseResponse) {
-        FindAllEmployeesResponse response = (FindAllEmployeesResponse) useCaseResponse;
-        Flux<EmployeeViewModel> employees = response.getEmployees()
-                .flatMap(employeeModel -> Mono.just(EmployeeViewModel.builder()
-                        .id(employeeModel.getId())
-                        .name(employeeModel.getName())
-                        .surname(employeeModel.getSurname())
-                        .lastName(employeeModel.getLastName())
-                        .age(employeeModel.getAge())
-                        .gender(employeeModel.getGender())
-                        .birthDate(employeeModel.getBirthDate())
-                        .position(employeeModel.getPosition())
-                        .build()));
-
-        return FindAllEmployeesVMResponse.builder()
-                .employees(employees)
-                .build();
-
-    }
 }
